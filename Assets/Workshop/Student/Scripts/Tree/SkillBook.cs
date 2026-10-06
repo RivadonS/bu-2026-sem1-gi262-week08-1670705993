@@ -17,29 +17,36 @@ using UnityEngine.InputSystem;
 
         public void Start()
         {
-        // build skill tree
-        // └── Attack
-        //     └── FireStorm
-        //         ├── FireBlast
-        //         └── FireBall
-        //             └── FireWave
-        //                 └── FireExplosion
+            // build skill tree
+            // └── Attack
+            //     └── FireStorm
+            //         ├── FireBlast
+            //         └── FireBall
+            //             └── FireWave
+            //                 └── FireExplosion
 
-        // 1. set the nextSkills for each skill
+            // 1. set the nextSkills for each skill
+            attack = new Skill("Attack");
+            fireStorm = new Skill("FireStorm");
+            fireBall = new Skill("FireBall");
+            fireBlast = new Skill("FireBlast");
+            fireWave = new Skill("FireWave");
+            fireExplosion = new Skill("FireExplosion");
+            
+            attack.isAvailable = true;
 
-        // [0] Attack -> FireStorm
+            // [0] Attack -> FireStorm
+            attack.nextSkills.Add(fireStorm);
+            // [1] FireStorm -> FireBlast
+            fireStorm.nextSkills.Add(fireBlast);
+            // [2] FireStorm -> FireBall
+            fireStorm.nextSkills.Add(fireBall);
+            // [3] FireBall -> FireWave
+            fireBall.nextSkills.Add(fireWave);
+            // [4] FireWave -> FireExplosion
+            fireWave.nextSkills.Add(fireExplosion);
 
-        // [1] FireStorm -> FireBlast
-
-        // [2] FireStorm -> FireBall
-
-        // [3] FireBall -> FireWave
-
-        // [4] FireWave -> FireExplosion
-
-        // [5] Attack -> FireStorm
-
-        this.attackSkillTree = new SkillTree(attack);
+            this.attackSkillTree = new SkillTree(attack);
         }
 
         public void Update()
@@ -48,7 +55,7 @@ using UnityEngine.InputSystem;
             if (keyboard != null && keyboard.pKey.wasPressedThisFrame)
             {
                 attackSkillTree.rootSkill.PrintSkillTreeHierarchy("");
-                // attackSkillTree.rootSkill.PrintSkillTree();
+                //attackSkillTree.rootSkill.PrintSkillTree();
                 Debug.Log("====================================");
             } 
         }

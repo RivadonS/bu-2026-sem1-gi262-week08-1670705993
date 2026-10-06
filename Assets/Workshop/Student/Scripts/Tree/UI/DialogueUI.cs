@@ -10,43 +10,51 @@ public class DialogueUI : MonoBehaviour
     public GameObject dialoguePanel;
     public TextMeshProUGUI npcText;
     public Transform choiceContainer;
-    public Button choiceButtonPrefab; // ลาก Prefab ปุ่มตัวเลือกมาใส่
+    public Button choiceButtonPrefab;
     public GameObject closeButtonDialogue;
     private DialogueSequen InteractNpcSequen;
 
-    // เก็บปุ่มที่ถูกสร้างขึ้น เพื่อนำไปทำลาย/ซ่อนในภายหลัง
     private List<Button> activeButtons = new List<Button>();
 
     public void Setup(DialogueSequen sequen)
     {
         //1. Set Dialogue Sequen
-
+        this.InteractNpcSequen = sequen;
+        if (this.InteractNpcSequen != null)
+        {
+            this.InteractNpcSequen.dialogueUI = this;
+        }
+        DialogueNode currentNode = InteractNpcSequen.tree.root;
+        ShowDialogue(currentNode);
         //Show UI
+        dialoguePanel.SetActive(true);
         gameObject.SetActive(true);
         closeButtonDialogue.SetActive(false);
     }
 
     public void ShowDialogue(DialogueNode node)
     {
-        // 2. set ให้เป็น โหนดปัจจุบัน
-
-        // 3. แสดงข้อความของ NPC
-
-        // 4. ล้างปุ่มตัวเลือกเก่า
-
-        // 5. สร้างปุ่มตัวเลือกใหม่ตาม nexts
-   
+        // 2.
+            InteractNpcSequen.currentNode = node;
+        // 3.
+            npcText.text = node.text;
+        // 4.
+            ClearChoices();
+        // 5. 
+        var choiceKeys = new List<string>(node.nexts.Keys);
+        for(int i = 0; i < choiceKeys.Count; i++) 
+        {
+            string choiceText = choiceKeys[i];
+            CreateChoiceButton(choiceText, i);
+        }   
     }
 
     private void CreateChoiceButton(string text, int index)
     {
         Button newButton = Instantiate(choiceButtonPrefab, choiceContainer);
 
-        // ตั้งค่าข้อความบนปุ่ม
         newButton.GetComponentInChildren<TextMeshProUGUI>().text = text;
 
-        // เพิ่ม Listener เมื่อกดปุ่ม
-        // ใช้ Lambda Expression เพื่อส่ง index กลับไปให้ DialogueManager
         newButton.onClick.AddListener(() => OnChoiceSelected(index));
 
         activeButtons.Add(newButton);
@@ -63,7 +71,6 @@ public class DialogueUI : MonoBehaviour
 
     private void OnChoiceSelected(int index)
     {
-        // ส่ง index ของตัวเลือกที่ผู้เล่นเลือกกลับไปให้ DialogueManager จัดการ
         InteractNpcSequen.SelectChoice(index);
     }
     public void ShowCloseButtonDialog() {
