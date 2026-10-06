@@ -10,7 +10,6 @@ public class NPC : Identity
 
     public override bool Hit()
     {
-        // ตรวจสอบว่าผู้เล่นมีไอเท็มที่ต้องการหรือไม่
         if (canTalk)
         {
             dialogueUI.Setup(sequen);
