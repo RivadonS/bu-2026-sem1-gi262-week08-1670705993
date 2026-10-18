@@ -72,7 +72,11 @@ namespace Assignment
 
         private int Power(int baseNum, int exponent)
         {
-            return -1;
+            // base case
+            if (exponent == 0) return 1;
+
+            // recursive case
+            return baseNum * Power(baseNum, exponent - 1);
         }
 
         public bool ASN02_IsPalindrome(string str)
@@ -82,7 +86,12 @@ namespace Assignment
 
         private bool IsPalindrome(string str, int start, int end)
         {
-            return false;
+            // base case
+            if (start >= end) return true;
+            if (str[start] != str[end]) return false;
+
+            // recursive case
+            return IsPalindrome(str, start + 1, end - 1);
         }
 
         public int ASN03_RecursiveGCD(int a, int b)
@@ -92,7 +101,11 @@ namespace Assignment
 
         private int GCD(int a, int b)
         {
-            return -1;
+            // base case
+            if (b == 0) return a;
+
+            // recursive case
+            return GCD(b, a % b);
         }
 
         public int ASN04_RecursiveBinarySearch(int[] arr, int target)
@@ -102,7 +115,22 @@ namespace Assignment
 
         private int BinarySearch(int[] arr, int target, int low, int high)
         {
-            return -1;
+            // base case
+            if (arr == null || low > high) return -1;
+
+            int mid = low + (high - low) / 2;
+
+            if (arr[mid] == target) return mid;
+
+            // recursive case
+            if (arr[mid] > target)
+            {
+                return BinarySearch(arr, target, low, mid - 1);
+            }
+            else
+            {
+                return BinarySearch(arr, target, mid + 1, high);
+            }
         }
 
         #endregion
